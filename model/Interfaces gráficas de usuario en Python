@@ -1,0 +1,176 @@
+Interfaces gráficas de usuario en Python
+
+ 
+
+ 
+En esta entrada veremos algunos de los toolkits para creación de interfaces gráficas de usuario (GUIs) con Python más populares: TkInter, wxPython, PyGTK y PyQt.
+
+TKINTER
+TkInter (de TK Interface) es un módulo que nos permite construir interfaces gráficas de usuario multiplataforma en Python utilizando el conocido toolkit Tk. Python incluye este módulo por defecto, lo que hace que sea un tookit muy popular. TkInter, además, es robusto, maduro y muy sencillo de aprender y de utilizar, contando con una amplia documentación.
+
+Por otro lado hasta la versión 8.5 Tk era famoso por lo poco atractivo de sus widgets (cosa que se podía solucionar hasta cierto punto gracias a Tile). No es hasta esta versión que contamos con cosas tan básicas como textos con antialiasing en X11 o widgets como Treeview. En esta versión también se incluye Tile por defecto, por lo que contamos con un mejor aspecto general para todas las plataformas.
+
+Sin embargo Python no se distribuye con Tk 8.5 hasta la versión 2.6, por lo que, para versiones de Python anteriores, es necesario recompilar TkInter para Tk 8.5 por nuestra cuenta, o bien usar Tile si no necesitamos ninguna de las nuevas características.
+
+Es más, para poder usar la mayor parte de las nuevas características de Tk 8.5 es necesario instalar una librería que actúe como wrapper de Ttk (el nombre con el que han dado en llamar al conjunto de los nuevos widgets y temas de Tk), como puede ser pyttk.
+
+TkInter se distribuye bajo la PSFL (Python Software Foundation License) una licencia compatible con la GPL creada para la distribución de software relacionado con el proyecto Python. La PSFL carece de la naturaleza viral de la GPL, por lo que permite crear trabajos derivados sin que estos se conviertan necesariamente en software libre.
+
+Por último, veamos una pequeña aplicación de ejemplo escrita con TkInter, sin uso de eventos y con solo unos pocos widgets, que nos servirá para comparar el aspecto de los distintos toolkits.
+
+view plaincopy to clipboardprint?
+from Tkinter import *  
+  
+root = Tk()  
+  
+frame = Frame(root)  
+frame.pack()  
+  
+label = Label(frame, text="Hola mundo")  
+c1 = Checkbutton(frame, text="Uno")  
+c2 = Checkbutton(frame, text="Dos")  
+entry = Entry(frame)  
+button = Button(frame, text="Aceptar")  
+  
+label.pack()  
+c1.pack()  
+c2.pack()  
+entry.pack()  
+button.pack()  
+  
+root.mainloop()  
+GUIs en Python con TkInter
+
+Pros: Popularidad, sencillez, documentación.
+Contras: Herramientas, integración con el sistema operativo, lentitud.
+Recomendado para: ¿Prototipos rápidos?
+
+WXPYTHON
+wxPython es un wrapper open source para el toolkit anteriormente conocido como wxWindows: wxWidgets. wxPython es posiblemente el toolkit para desarrollo de interfaces gráficas en Python más popular, superando incluso a TKinter, que, como comentamos, se incluye por defecto con el intérprete de Python. wxPython cuenta con más y mejores widgets que TKinter, y ofrece un muy buen aspecto en todas las plataformas, utilizando MFC en Windows y GTK en Linux.
+
+wxPython cuenta además con herramientas muy interesantes como wxGlade, una aplicación RAD para diseñar las interfaces gráficas de forma visual.
+
+Sin embargo, la API adolece de una cierta falta de consistencia y un estilo muy alejado de Python y más cercano a C++, ya que, de hecho, uno de sus objetivos es no distanciarse demasiado del estilo de wxWidgets. Esto ha provocado que hayan aparecido distintos proyectos para abstraer al programador de los entresijos del toolkit, como Dabo o Wax, aunque estos han tenido un éxito muy comedido.
+
+Tanto wxPython como wxWidgets se distribuyen bajo una licencia “wxWindows Licence”, que consiste esencialmente en una LGPL con la excepción de que las obras derivadas en formato binario se pueden distribuir como el usuario crea conveniente.
+
+Algunos ejemplos de aplicaciones conocidas creadas con wxPython son DrPython, wxGlade, Boa Constructor, Stani’s Python Editor y ABC.
+
+Finalmente, a continuación podéis consultar el código de la aplicación de ejemplo:
+
+view plaincopy to clipboardprint?
+import wx  
+  
+class Frame(wx.Frame):  
+    def __init__(self):  
+        wx.Frame.__init__(self, parent=None)  
+        panel = wx.Panel(self)  
+        text = wx.StaticText(panel, -1, "Hola mundo")  
+        c1 = wx.CheckBox(panel, -1, label="Uno")  
+        c2 = wx.CheckBox(panel, -1, label="Dos")  
+        t = wx.TextCtrl(panel)  
+        b1 = wx.Button(panel, -1, label="Aceptar")  
+          
+        sizer = wx.BoxSizer(wx.VERTICAL)  
+        sizer.Add(text, 0, wx.ALL, 0)  
+        sizer.Add(c1, 0, wx.ALL, 0)  
+        sizer.Add(c2, 0, wx.ALL, 0)  
+        sizer.Add(t, 0, wx.ALL, 0)  
+        sizer.Add(b1, 0, wx.ALL, 0)  
+        panel.SetSizer(sizer)  
+        panel.Layout()  
+  
+app = wx.App(redirect=True)  
+Frame().Show()  
+app.MainLoop()  
+GUIs en Python con wxPython
+
+Pros: Popularidad, herramientas, multiplataforma.
+Contras: API muy poco pythonica.
+Recomendado para: Desarrollo multiplataforma.
+
+PYGTK
+Posiblemente PyGTK sea la segunda opción más utilizada para la creación de interfaces gráficas con Python, solo por detrás de wxPython, con la que compite de tú a tú. PyGTK, como podemos suponer por su nombre, es un binding de GTK, la biblioteca utilizada para desarrollar GNOME.
+
+PyGTK cuenta con una API muy clara, limpia y elegante y es, además, muy sencillo de aprender, solo superado en ese aspecto por Tkinter. PyGTK también cuenta con grandes herramientas para construir la interfaz de forma gráfica, como Glade o Gazpacho.
+
+Un punto negativo es que, hasta hace poco, era necesario instalar X11 para poder usar PyGTK en Mac OS, dado que GTK no había sido portado. Actualmente se puede utilizar el GTK+ OS X Framework que se encuentra todavía en versión beta.
+
+PyGTK se distribuye bajo licencia LGPL.
+
+Algunas aplicaciones escritas con PyGTK son Deluge, Exaile, Listen, Envy, WingIDE, DeVeDe o emesene.
+
+Veamos el código de la aplicación de ejemplo en PyGTK:
+
+view plaincopy to clipboardprint?
+import pygtk  
+import gtk  
+  
+window = gtk.Window(gtk.WINDOW_TOPLEVEL)      
+window.connect("destroy", gtk.main_quit)  
+  
+box = gtk.VBox(False, 0)  
+window.add(box)  
+      
+label = gtk.Label("Hola Mundo")  
+c1 = gtk.CheckButton(label="Uno")  
+c2 = gtk.CheckButton(label="Dos")  
+entry = gtk.Entry()  
+button = gtk.Button("Aceptar")  
+  
+box.add(label)  
+box.add(c1)  
+box.add(c2)  
+box.add(entry)  
+box.add(button)  
+  
+window.show_all()  
+  
+gtk.main()  
+GUIs en Python con PyGTK
+
+Pros: Popularidad, sencillez, herramientas.
+Contras: Ligeramente más complicado de instalar y distribuir en Mac OS.
+Recomendado para: Cualquier tipo de aplicación. Especialmente interesante para Gnome.
+
+PYQT
+Es posible que PyQt, el binding de Qt para Python, sea la menos popular de las cuatro opciones, aunque es un toolkit sencillo de utilizar y con muchas posibilidades. Es especialmente interesante para el desarrollo en KDE, dado que Qt es la librería utilizada para crear este entorno.
+
+No obstante el interés en Qt no se limita a KDE, sino que es una biblioteca multiplataforma que, además, desde la versión 4, utiliza widgets nativos para las distintas plataformas (anteriormente Qt emulaba el aspecto de la plataforma en la que corría).
+
+Como aplicación de RAD se puede utilizar Qt Designer.
+
+PyQt utiliza un modelo de licencias similar al de Qt, con una licencia dual GPL/PyQt Commercial. Si nuestro programa es compatible con la licencia GPL, es decir, si vamos a publicar el código fuente y permitir a los usuarios modificar nuestra aplicación, podremos usar PyQt sin más preocupaciones. En caso contrario tendremos que pagar para obtener una licencia comercial.
+
+Un par de ejemplos de aplicaciones que usan PyQt son Eric y QTorrent.
+
+El código de la aplicación de ejemplo en PyQt tendría el siguiente aspecto:
+
+view plaincopy to clipboardprint?
+import sys  
+from PyQt4.QtCore import *  
+from PyQt4.QtGui import *  
+  
+class Form(QWidget):  
+    def __init__(self):  
+        QWidget.__init__(self)  
+  
+        layout = QVBoxLayout()  
+        layout.addWidget(QLabel("Hola mundo"))  
+        layout.addWidget(QCheckBox("Uno"))  
+        layout.addWidget(QCheckBox("Dos"))  
+        layout.addWidget(QLineEdit())  
+        layout.addWidget(QPushButton("Aceptar"))  
+  
+        self.setLayout(layout)  
+  
+  
+app = QApplication(sys.argv)  
+form = Form()  
+form.show()  
+app.exec_()  
+GUIs en Python con PyQt
+
+Pros: Sencillez, herramientas, multiplataforma.
+Contras: Ligeramente más complicado de instalar y distribuir en Mac OS. Licencia.
+Recomendado para: Cualquier tipo de aplicación. Especialmente interesante para KDE.
