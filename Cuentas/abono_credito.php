@@ -20,7 +20,7 @@ $paquete2=mysql_query($orden2);
             function mostrarFacturas(){
                     var cli=$("#cliente").val();
                     $.ajax({
-                            url: "cargarciudades.php",
+                            url: "cargarFacturasCliente.php",
                             data:{idCli:cli},
                             type: "POST",
                             success:function(data){
