@@ -7,7 +7,7 @@ $paquete1=mysql_query($orden1);
 ?>
 <?php
 	obtenerPagina();
-?>0
+?>
 <?php include("includes/header.php");?>
         
         <script>
