@@ -1,5 +1,5 @@
 <?php
-
+//hola
 $numFact=$_POST["comprob_id"];
 $cli=$_POST["cliente_id"];
 $tPago = $_POST["pago"];
@@ -72,7 +72,7 @@ $archivo="factura-$numFact.pdf";
 $archivo_de_salida=$archivo;
 
 $pdf=new FPDF();  //crea el objeto
-$pdf->AddPage();  //aÒadimos una p·gina. Origen coordenadas, esquina superior izquierda, posiciÛn por defeto a 1 cm de los bordes.
+$pdf->AddPage();  //a√±adimos una p√°gina. Origen coordenadas, esquina superior izquierda, posici√≥n por defeto a 1 cm de los bordes.
 
 
 //logo de la tienda
@@ -82,13 +82,13 @@ $pdf->Image('interAgro.jpg',10,10 );
 // Datos de la tienda
 $pdf->SetFont('Arial','B',12);
 $pdf->SetXY(50, 10);
-$pdf->MultiCell(100, //posiciÛn X
-5, //posiciÛn Y
+$pdf->MultiCell(100, //posici√≥n X
+5, //posici√≥n Y
 "INTER Soluciones Agropecuarias de CR S.A\n".
-"CÈdula jurÌdica 3-101-196052 \n".
-"San Nicol·s, Cartago, Costa Rica"."\n".
-"Bodega, La Virgen, SarapiquÌ, Heredia"."\n".
-"TelÈfono: +(506) 2761-2200, +(506) 2573-0903"."\n".
+"C√©dula jur√≠dica 3-101-196052 \n".
+"San Nicol√°s, Cartago, Costa Rica"."\n".
+"Bodega, La Virgen, Sarapiqu√≠, Heredia"."\n".
+"Tel√©fono: +(506) 2761-2200, +(506) 2573-0903"."\n".
 "Correo: interagrocr@gmail.com", 0, // bordes 0 = no | 1 = si
  "C", // texto justificado 
  false);
@@ -113,7 +113,7 @@ $pdf->SetXY(20, 60);
 $pdf->Cell(190, 10, "Datos del cliente:", 0, 2);
 $pdf->SetFont('Arial','',9);
 $pdf->MultiCell(
-190, //posiciÛn X
+190, //posici√≥n X
 5, //posicion Y
 "Nombre: ".$reg1[0]."\n".
 "Direccion: ".$reg1[1]."\n".
@@ -121,16 +121,16 @@ $pdf->MultiCell(
 0, // bordes 0 = no | 1 = si
 "J", // texto justificado
 false);
-//Salto de lÌnea
+//Salto de l√≠nea
 $pdf->Ln(2);
 
 
-// extracciÛn de los datos de los productos a travÈs de la funciÛn explode
+// extracci√≥n de los datos de los productos a trav√©s de la funci√≥n explode
 // $e_productos = explode(",", $productos);
 // $e_unidades = explode(",", $unidades);
 // $e_precio_unidad = explode(",", $precio_unidad);
 
-//CreaciÛn de la tabla de los detalles de los productos productos
+//Creaci√≥n de la tabla de los detalles de los productos productos
 $top_productos = 100;
     $pdf->SetXY(0, $top_productos);
     $pdf->Cell(40, 5, 'CANTIDAD', 0, 1, 'C');
@@ -146,7 +146,7 @@ $top_productos = 100;
     $pdf->Cell(40, 5, 'TOTAL', 0, 1, 'C');
  
 $precio_subtotal = 0; // variable para almacenar el subtotal
-$y = 115; // variable para la posiciÛn top desde la cual se empezar·n a agregar los datos
+$y = 115; // variable para la posici√≥n top desde la cual se empezar√°n a agregar los datos
 $x=0;
 
 
@@ -185,7 +185,7 @@ while ($reg2=mysql_fetch_array($paquete2, MYSQL_NUM)) {
     }else{
         echo '<script language="javascript">alert("ERROR");</script>'; 
     }  
-    //C·lculo del subtotal  
+    //C√°lculo del subtotal  
     $precio_subtotal += $reg2[3] * $reg2[4];
     $x++;
 
@@ -202,10 +202,10 @@ while ($reg2=mysql_fetch_array($paquete2, MYSQL_NUM)) {
 mysql_close($c);
 
 
-//C·lculo del Impuesto
+//C√°lculo del Impuesto
 $add_iva = $precio_subtotal * $iva / 100;
 $des=($descuent/100)*$precio_subtotal;
-//C·lculo del precio total
+//C√°lculo del precio total
 $total_mas_iva = $precio_subtotal-$des+$add_iva;
 
 $pdf->Ln(2);
@@ -246,7 +246,7 @@ $top_datos=300;
 $pdf->SetXY(80, $top_datos);
 $pdf->Cell(190, 10, "FACTURA", 0, 2, "C");
 $pdf->SetFont('Arial','B',10);
-$pdf->MultiCell(190,5, "N˙mero de factura: ".$reg1[3]."\n".
+$pdf->MultiCell(190,5, "N√∫mero de factura: ".$reg1[3]."\n".
     "Fecha: ".date('d/m/y')."\n".
     "Tipo Moneda: [Colones]  [Dolares]\n".
     "Tipo de Pago:[Contado]  [Credito]\n",
@@ -264,14 +264,14 @@ $pdf->Cell(190, 5, "Hecho por: ______________________", 0, 1, "L");
 $pdf->SetXY(5, 255);
 $pdf->Cell(190, 5,
 "Hacer todos los cheques pagaderos a INTER Soluciones Agropecuarias de CR S.A",0,1,"L");
-$pdf->Cell(190, 5,"Autorizo por administraciÛn tributaria seg˙n resoluciÛn #11-97 de la Gaceta #171 del 12 de agosto de 1997",0,1,"C");
+$pdf->Cell(190, 5,"Autorizo por administraci√≥n tributaria seg√∫n resoluci√≥n #11-97 de la Gaceta #171 del 12 de agosto de 1997",0,1,"C");
 $pdf->Ln(2);
 $pdf->Ln(2);
 $pdf->SetFont('Arial','B',11);
 $pdf->Cell(190, 5, "GRACIAS POR SU CONFIANZA EN NOSOTROS", 0, 1, "C");
 $pdf->Output();//cierra el objeto pdf
 
-//Creacion de las cabeceras que generar·n el archivo pdf
+//Creacion de las cabeceras que generar√°n el archivo pdf
 header ("Content-Type: application/download");
 header ("Content-Disposition: attachment; filename=$archivo");
 header("Content-Length: " . filesize("$archivo"));
@@ -279,11 +279,11 @@ $fp = fopen($archivo, "r");
 fpassthru($fp);
 fclose($fp);
 
-//EliminaciÛn del archivo en el servidor
+//Eliminaci√≥n del archivo en el servidor
 unlink($archivo);
 }else{
     $pdf=new FPDF('P','mm',array(58,150));  //crea el objeto
-$pdf->AddPage();  //aÒadimos una p·gina. Origen coordenadas, esquina superior izquierda, posiciÛn por defeto a 1 cm de los bordes.
+$pdf->AddPage();  //a√±adimos una p√°gina. Origen coordenadas, esquina superior izquierda, posici√≥n por defeto a 1 cm de los bordes.
 
 
 
@@ -291,13 +291,13 @@ $pdf->AddPage();  //aÒadimos una p·gina. Origen coordenadas, esquina superior iz
 // Datos de la tienda
 $pdf->SetFont('Arial','B',6);
 $pdf->SetXY(0, 5);
-$pdf->MultiCell(55, //posiciÛn X
-5, //posiciÛn Y
+$pdf->MultiCell(55, //posici√≥n X
+5, //posici√≥n Y
 "INTER Soluciones Agropecuarias de CR S.A\n".
-"CÈdula jurÌdica 3-101-196052 \n".
-"San Nicol·s, Cartago, Costa Rica"."\n".
-"Bodega, La Virgen, SarapiquÌ, Heredia"."\n".
-"TelÈfono: +(506) 2761-2200, +(506) 2573-0903"."\n".
+"C√©dula jur√≠dica 3-101-196052 \n".
+"San Nicol√°s, Cartago, Costa Rica"."\n".
+"Bodega, La Virgen, Sarapiqu√≠, Heredia"."\n".
+"Tel√©fono: +(506) 2761-2200, +(506) 2573-0903"."\n".
 "Correo: interagrocr@gmail.com", 0, // bordes 0 = no | 1 = si
  "C", false);
 
@@ -311,7 +311,7 @@ $pdf->SetXY(3, 46);
 
 $pdf->SetFont('Arial','',6);
 $pdf->MultiCell(
-55, //posiciÛn X
+55, //posici√≥n X
 3, //posicion Y
 "Nombre: ".$reg1[0]."\n".
 "Direccion: ".$reg1[1]."\n".
@@ -319,14 +319,14 @@ $pdf->MultiCell(
 0, // bordes 0 = no | 1 = si
 "J", // texto justificado
 false);
-//Salto de lÌnea
+//Salto de l√≠nea
 $pdf->Ln(2);
-// extracciÛn de los datos de los productos a travÈs de la funciÛn explode
+// extracci√≥n de los datos de los productos a trav√©s de la funci√≥n explode
 // $e_productos = explode(",", $productos);
 // $e_unidades = explode(",", $unidades);
 // $e_precio_unidad = explode(",", $precio_unidad);
 
-//CreaciÛn de la tabla de los detalles de los productos productos
+//Creaci√≥n de la tabla de los detalles de los productos productos
 $pdf->SetFont('Arial','',5);
 $top_productos = 60;
     $pdf->SetXY(4, $top_productos);
@@ -343,7 +343,7 @@ $pdf->SetXY(5, 65);
 $pdf->Cell(5, 5, '---------------------------------------------------------------------------', 0, 1, 'L');   
 
 $precio_subtotal = 0; // variable para almacenar el subtotal
-$y = 70; // variable para la posiciÛn top desde la cual se empezar·n a agregar los datos
+$y = 70; // variable para la posici√≥n top desde la cual se empezar√°n a agregar los datos
 $x=0;
 
 while ($reg2=mysql_fetch_array($paquete2, MYSQL_NUM)) {
@@ -366,7 +366,7 @@ while ($reg2=mysql_fetch_array($paquete2, MYSQL_NUM)) {
         $pdf->Cell(5, 5, number_format($reg2[5]/$tipoC,2), 0, 1);
 
  
-        //C·lculo del subtotal  
+        //C√°lculo del subtotal  
         $precio_subtotal += $reg2[2] * $reg2[3];
         $x++;
 
@@ -388,7 +388,7 @@ while ($reg2=mysql_fetch_array($paquete2, MYSQL_NUM)) {
            
             
         
-        //C·lculo del subtotal  
+        //C√°lculo del subtotal  
         $precio_subtotal += $reg2[3] * $reg2[4];
         $x++;
 
@@ -405,10 +405,10 @@ while ($reg2=mysql_fetch_array($paquete2, MYSQL_NUM)) {
 mysql_close($c);
 
 
-//C·lculo del Impuesto
+//C√°lculo del Impuesto
 //$add_iva = $precio_subtotal * $iva / 100;
 
-//C·lculo del precio total
+//C√°lculo del precio total
 $add_iva = $precio_subtotal * $iva / 100;
 $des=($descuent/100)*$precio_subtotal;
 $total_mas_iva = $precio_subtotal-$des+$add_iva;
@@ -442,8 +442,8 @@ $pdf->Ln(2);
 $pdf->Ln(2);
 $pdf->Ln(2);
 $pdf->SetXY(2,$y+35);
-$pdf->MultiCell(55, 3,"Autorizo por administraciÛn tributaria"."\n".
-                    "seg˙n resoluciÛn #11-97 de la Gaceta #171"."\n".
+$pdf->MultiCell(55, 3,"Autorizo por administraci√≥n tributaria"."\n".
+                    "seg√∫n resoluci√≥n #11-97 de la Gaceta #171"."\n".
                     "del 12 de agosto de 1997",0,"C",false);
 $pdf->Ln(2);
 $pdf->Ln(2);
@@ -456,7 +456,7 @@ $top_datos=300;
 $pdf->SetXY(80, $top_datos);
 $pdf->Cell(190, 10, "FACTURA", 0, 2, "C");
 $pdf->SetFont('Arial','B',10);
-$pdf->MultiCell(190,5, "N˙mero de factura: ".$reg1[3]."\n".
+$pdf->MultiCell(190,5, "N√∫mero de factura: ".$reg1[3]."\n".
     "Fecha: ".date('d/m/y')."\n".
     "Tipo Moneda: [Colones]  [Dolares]\n".
     "Tipo de Pago:[Contado]  [Credito]\n",
