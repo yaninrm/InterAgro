@@ -10,17 +10,21 @@ $paquete1=mysql_query($orden1);
 $orden2="SELECT * FROM tipo_credito";
 $paquete2=mysql_query($orden2);
 
+$orden3="SELECT * FROM comprobante_detalle";
+$paquete3=mysql_query($orden2);
+
+
 ?>
 <?php
 	obtenerPagina();
 ?>
 <?php include("includes/header.php");?>
-        
+                
         <script>
             function mostrarFacturas(){
                     var cli=$("#cliente").val();
                     $.ajax({
-                            url: "cargarFacturasCliente.php",
+                            url: "cargarFacturasClientes.php",
                             data:{idCli:cli},
                             type: "POST",
                             success:function(data){
@@ -28,7 +32,7 @@ $paquete2=mysql_query($orden2);
                                 }               
                         })      
                 }
-                 function mostrarSaldo(){
+                function mostrarSaldo(){
                     var fact=$("#factura").val();
                     $.ajax({
                             url: "cargarSaldo.php",
@@ -39,6 +43,45 @@ $paquete2=mysql_query($orden2);
                                 }               
                         })      
                 }
+
+                function mostrarCant(){
+                    var id=$("#producto").val();
+                    $.ajax({
+                            url: "cargarCant.php",
+                            data:{idPro:id},
+                            type: "POST",
+                            success:function(data){
+                                    $("#cantidad").html(data);
+                                }               
+                        })      
+                }
+
+                 function mostrarProd(){
+                    var fac=$("#factura").val();
+                    $.ajax({
+                            url: "cargarProd.php",
+                            data:{idF:fac},
+                            type: "POST",
+                            success:function(data){
+                                    $("#producto").html(data);
+                                }               
+                        })      
+                }
+
+                function cambiaTipo(){
+                    var tip=$("#tipoAbono").val();
+                    if(tip=='2'){
+                        $('#producto').removeAttr("disabled");
+                        mostrarProd();
+                    }else{
+                        $("#producto option[value=0]").attr("selected",true); 
+                        $('#producto').attr('disabled', 'disabled');
+                        $('#cantExi').hide();
+                        
+                    }
+                   
+                }
+
         </script>
 		<table id="estructura">
 			<tr>
@@ -90,8 +133,8 @@ $paquete2=mysql_query($orden2);
                             <th style="text-align:left;">Tipo Abono</th>
                             <td>
                                 <div class="form-group">
-                                <select id="tipoAbono" name="tipoAbono" style="width:70%" class="form-control">
-                                        <option value=" " selected>TIPO ABONO</option>
+                                <select id="tipoAbono" name="tipoAbono" onchange="cambiaTipo()" style="width:51%" class="form-control">
+                                        <option value="0" selected>TIPO ABONO</option>
                                         <?php while($reg2=mysql_fetch_array($paquete2)) { ?>
                                         <option value="<?php echo $reg2[0]; ?>" > <?php echo  utf8_encode($reg2[1]); ?> </option>
                                         <?php } ?>
@@ -118,6 +161,22 @@ $paquete2=mysql_query($orden2);
                                         </div>
                                     </div>
                                 </div>-->
+                            </td>
+                        </tr>
+                        </<tr>
+                            <th style="text-align:left;">Producto</th>
+                            <td>
+                                <div class="form-group">
+                                <select id="producto" name="producto" onchange="mostrarCant()" style="width:51%" class="form-control">
+                                        
+                                </select>
+                                </div>
+                            </td>
+                            <th style="text-align:left;">Cantidad</th>
+                            <td>
+                                <div class="form-group">
+                                    <td><div name="cantidad" id="cantidad" class="form-group"></div></td>
+                                </div>
                             </td>
                         </tr>
                         <tr>
