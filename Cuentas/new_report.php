@@ -14,16 +14,7 @@ $paquete2=mysql_query($orden2);
 	obtenerPagina();
 ?>
 <?php include("includes/header.php");?>
-        <link rel="stylesheet" href="css/font-awesome.min.css">
-            
-        <link href="css/bootstrap-responsive.css" rel="stylesheet">
-
-
-        <link href="style.css" media="screen" rel="stylesheet" type="text/css" />
-        <link rel="stylesheet" type="text/css" href="css/DT_bootstrap.css">
-        <link rel="stylesheet" type="text/css" href="tcal.css" />
-        <script type="text/javascript" src="tcal.js"></script>
-        <script src="jquery.min.js"></script>
+        
         <script>
             function mostrarFacturas(){
                     var cli=$("#cliente").val();
@@ -133,3 +124,4 @@ $paquete2=mysql_query($orden2);
 				</td>
 			</tr>
 		</table>
+		<?php include("includes/footer.php");?>
