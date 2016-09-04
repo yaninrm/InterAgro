@@ -46,7 +46,7 @@ if($tipoF=="normal"){
     $reg2=mysql_fetch_array($paquete3);
 
 
-    $orden4="SELECT producto_id,nombre,presenta,precioUnitario,cantidad,total,descuento,cantidadExiste
+    $orden4="SELECT producto_id,nombre,presenta,precioUnitario,cantidad,total,descuento,cantidadExiste,cantidadSobre
     FROM producto,comprobante_detalle
     WHERE comprobante_detalle.Producto_id=producto.id
     AND comprobante_detalle.Comprobante_id=$numFact";
@@ -56,8 +56,6 @@ if($tipoF=="normal"){
            values({$cli},{$numFact},'{$fec}','{$fecPlazo}','{$tipoC}','{$tPago}')";
     mysql_query($iSQL);
     
-
-
 
     $archivo="factura-$numFact.pdf";
 
@@ -184,7 +182,7 @@ if($tipoF=="normal"){
                 mysql_query($sSQLCant);
         }else{
 
-            $sSQLCant="UPDATE producto Set cantidadSobre={$reg2[4]} Where id={$reg2[0]}";
+            $sSQLCant="UPDATE producto Set cantidadSobre={$reg2[8]}+{$reg2[4]} Where id={$reg2[0]}";
                 mysql_query($sSQLCant);
 
                 $error=true;
@@ -231,51 +229,47 @@ if($tipoF=="normal"){
     mysql_query($iSQL);
 
     
+    if($tPago=='Credito'){
 
-    if($tipoC=='COLONES'){
 
-        $reciboC= "SELECT * from cuenta_cobrar where id_cliente= {$cli} and tipo_pago='Credito' and moneda='COLONES'";
-        
-        $saldoG=0;
+        if($tipoC=='COLONES'){
 
-        if (mysql_query($reciboC)){
+            $reciboC= "SELECT * from cuenta_cobrar where id_cliente= {$cli} and tipo_pago='Credito' and moneda='COLONES'";
+            
+            $saldoG=0;
 
-            $respuesta=mysql_query($recibo);
-            while($cuenta = mysql_fetch_array($respuesta)){
-                $saldoG+=$cuenta['saldo_Factura'];
+            if (mysql_query($reciboC)){
+
+                $respuesta=mysql_query($recibo);
+                while($cuenta = mysql_fetch_array($respuesta)){
+                    $saldoG+=$cuenta['saldo_Factura'];
+                }
+
+                $iSQL2="UPDATE cuenta_cobrar SET saldo_Global= {$saldoG}
+                        WHERE id_cliente={$cli}";
+                mysql_query($iSQL2);
+
             }
-
-            $iSQL2="UPDATE cuenta_cobrar SET saldo_Global= {$saldoG}
-                    WHERE id_cliente={$cli} and tipo_pago='Credito' and moneda='COLONES'";
-            mysql_query($iSQL2);
 
         }
 
-        $iSQL3="UPDATE cuenta_cobrar SET saldo_Global={$total_mas_iva}
-                WHERE id_Comprobante={$numFact} and tipo_pago='Contado'";
-        mysql_query($iSQL3);
-    }
+        if($tipoC=='DOLARES'){
+            $reciboC= "SELECT * from cuenta_cobrar where id_cliente= {$cli} and tipo_pago='Credito' and moneda='DOLARES'";
+            $saldoD=0;
 
-    if($tipoC=='DOLARES'){
-        $reciboC= "SELECT * from cuenta_cobrar where id_cliente= {$cli} and tipo_pago='Credito' and moneda='DOLARES'";
-        $saldoD=0;
+            if (mysql_query($reciboC)){
+               
+                $respuesta=mysql_query($reciboC);
+                while($cuenta = mysql_fetch_array($respuesta)){
+                    $saldoD+=$cuenta['saldo_Factura'];
+                }
 
-        if (mysql_query($recibo)){
-           
-            $respuesta=mysql_query($reciboC);
-            while($cuenta = mysql_fetch_array($respuesta)){
-                $saldoD+=$cuenta['saldo_Factura'];
+                $iSQL2="UPDATE cuenta_cobrar SET saldo_global_dolares = {$saldoD}
+                        WHERE id_cliente={$cli}";
+                mysql_query($iSQL2);
+
             }
-
-            $iSQL2="UPDATE cuenta_cobrar SET saldo_global_dolares = {$saldoD}
-                    WHERE id_cliente={$cli} and tipo_pago='Credito' and moneda='DOLARES'";
-            mysql_query($iSQL2);
-
         }
-
-        $iSQL3="UPDATE cuenta_cobrar SET saldo_global_dolares={$total_mas_iva}
-                WHERE id_Comprobante={$numFact} and tipo_pago='Contado'" ;
-        mysql_query($iSQL3);
     }
 
     $y = $y + 25; 
@@ -461,43 +455,12 @@ while ($reg2=mysql_fetch_array($paquete4, MYSQL_NUM)) {
     $sSQLCant="UPDATE producto Set cantidadExiste={$reg2[7]}-{$reg2[4]} Where id={$reg2[0]}";
         mysql_query($sSQLCant);
 
-
-
-     
+    
 }
-
-
-
-
 
 $add_iva = $precio_subtotal * $iva / 100;
 
 $total_mas_iva = $precio_subtotal-$descuent+$add_iva;
-
-if($tPago=='Credito'){
-    $iSQL="UPDATE cuenta_cobrar SET monto_Inicial={$total_mas_iva}, saldo_Factura= {$total_mas_iva}
-            WHERE id_Comprobante={$numFact}";
-
-    mysql_query($iSQL);
-
-    $recibo= "SELECT * from cuenta_cobrar where id_cliente= {$cli}";
-
-    $saldoG=0;
-
-    if (mysql_query($recibo)){
-
-        $respuesta=mysql_query($recibo);
-        while($cuenta = mysql_fetch_array($respuesta)){
-            $saldoG+=$cuenta['saldo_Factura'];
-        }
-
-    }
-
-    $iSQL2="UPDATE cuenta_cobrar SET saldo_Global= {$saldoG}
-            WHERE id_cliente={$cli}";
-            
-    mysql_query($iSQL2);
-}
 
 $pdf->Ln(2);
 
