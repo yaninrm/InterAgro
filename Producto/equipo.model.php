@@ -77,7 +77,7 @@ class ProductoModel
 		try 
 		{
 			$stm = $this->pdo
-			          ->prepare("DELETE FROM producto WHERE id = ?");			          
+			          ->prepare("update producto set estado=0 where id = ?");			          
 
 			$stm->execute(array($prod));
 		} catch (Exception $e) 
